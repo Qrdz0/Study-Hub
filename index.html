@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study Hub</title>
+<meta name="description" content="Examenplanning en flashcards voor de examens van december">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <header>
+    <p class="meta">Study Hub</p>
+    <h1>Examens december 2026</h1>
+  </header>
+
+  <section aria-labelledby="planning">
+    <h2 id="planning">Planning</h2>
+    <ol class="schedule">
+      <li class="green"><a href="gezondheid.html"><span class="dot"></span><time class="meta" datetime="2026-12-01">di 1 dec</time><span class="name">Gezondheid en welzijn</span><span class="meta" data-date="2026-12-01"></span></a></li>
+      <li class="pink"><a href="interieur.html"><span class="dot"></span><time class="meta" datetime="2026-12-02">wo 2 dec</time><span class="name">Zorg voor interieur en linnen</span><span class="meta" data-date="2026-12-02"></span></a></li>
+      <li class="yellow"><a href="maaltijdzorg.html"><span class="dot"></span><time class="meta" datetime="2026-12-04">vr 4 dec</time><span class="name">Maaltijdzorg</span><span class="meta" data-date="2026-12-04"></span></a></li>
+      <li class="blue"><a href="pedagogisch.html"><span class="dot"></span><time class="meta" datetime="2026-12-07">ma 7 dec</time><span class="name">Pedagogisch handelen</span><span class="meta" data-date="2026-12-07"></span></a></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="vakken">
+    <h2 id="vakken">Vakken</h2>
+    <ul class="subjects">
+      <li class="green"><a href="gezondheid.html"><span class="dot"></span><span>Gezondheid en welzijn</span><span class="meta">18 kaarten</span></a></li>
+      <li class="pink"><a href="interieur.html"><span class="dot"></span><span>Zorg voor interieur en linnen</span><span class="meta">17 kaarten</span></a></li>
+      <li class="yellow"><a href="maaltijdzorg.html"><span class="dot"></span><span>Maaltijdzorg</span><span class="meta">18 kaarten</span></a></li>
+      <li class="blue"><a href="pedagogisch.html"><span class="dot"></span><span>Pedagogisch handelen</span><span class="meta">17 kaarten</span></a></li>
+    </ul>
+  </section>
+</main>
+<script>
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+for (const el of document.querySelectorAll('[data-date]')) {
+  const d = Math.round((new Date(`${el.dataset.date}T00:00`) - today) / 864e5);
+  el.textContent = d > 1 ? `nog ${d} dagen` : d === 1 ? 'morgen' : d === 0 ? 'vandaag' : 'voorbij';
+}
+</script>
+</body>
+</html>
