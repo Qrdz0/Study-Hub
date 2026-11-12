@@ -9,19 +9,27 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<header class="bar"><span class="brand">Study Hub</span></header>
 <main>
   <header>
-    <p class="meta">Study Hub</p>
-    <h1>Examens december 2026</h1>
+    <p class="meta">December 2026</p>
+    <h1>Examens</h1>
   </header>
 
-  <section aria-labelledby="planning">
-    <h2 id="planning">Planning</h2>
-    <ol class="schedule">
-      <li class="green"><a href="gezondheid.html"><span class="dot"></span><time class="meta" datetime="2026-12-01">di 1 dec</time><span class="name">Gezondheid en welzijn</span><span class="meta" data-date="2026-12-01"></span></a></li>
-      <li class="pink"><a href="interieur.html"><span class="dot"></span><time class="meta" datetime="2026-12-02">wo 2 dec</time><span class="name">Zorg voor interieur en linnen</span><span class="meta" data-date="2026-12-02"></span></a></li>
-      <li class="yellow"><a href="maaltijdzorg.html"><span class="dot"></span><time class="meta" datetime="2026-12-04">vr 4 dec</time><span class="name">Maaltijdzorg</span><span class="meta" data-date="2026-12-04"></span></a></li>
-      <li class="blue"><a href="pedagogisch.html"><span class="dot"></span><time class="meta" datetime="2026-12-07">ma 7 dec</time><span class="name">Pedagogisch handelen</span><span class="meta" data-date="2026-12-07"></span></a></li>
+  <section class="countdown" aria-label="Examenplanning">
+    <div class="lead green" id="lead">
+      <div>
+        <p class="meta">Volgend examen</p>
+        <a class="lead-name" id="lead-name" href="gezondheid.html">Gezondheid en welzijn</a>
+        <p class="meta" id="lead-date">di 1 dec</p>
+      </div>
+      <p class="days"><span id="days">19</span> <span id="unit">dagen</span></p>
+    </div>
+    <ol class="exams">
+      <li class="green" data-date="2026-12-01"><a href="gezondheid.html"><span class="when"><span class="dot"></span><time class="meta" datetime="2026-12-01">di 1 dec</time></span><span class="name">Gezondheid en welzijn</span><span class="meta left"></span></a></li>
+      <li class="pink" data-date="2026-12-02"><a href="interieur.html"><span class="when"><span class="dot"></span><time class="meta" datetime="2026-12-02">wo 2 dec</time></span><span class="name">Zorg voor interieur en linnen</span><span class="meta left"></span></a></li>
+      <li class="yellow" data-date="2026-12-04"><a href="maaltijdzorg.html"><span class="when"><span class="dot"></span><time class="meta" datetime="2026-12-04">vr 4 dec</time></span><span class="name">Maaltijdzorg</span><span class="meta left"></span></a></li>
+      <li class="blue" data-date="2026-12-07"><a href="pedagogisch.html"><span class="when"><span class="dot"></span><time class="meta" datetime="2026-12-07">ma 7 dec</time></span><span class="name">Pedagogisch handelen</span><span class="meta left"></span></a></li>
     </ol>
   </section>
 
@@ -39,9 +47,24 @@
 <script>
 const today = new Date();
 today.setHours(0, 0, 0, 0);
-for (const el of document.querySelectorAll('[data-date]')) {
-  const d = Math.round((new Date(`${el.dataset.date}T00:00`) - today) / 864e5);
-  el.textContent = d > 1 ? `nog ${d} dagen` : d === 1 ? 'morgen' : d === 0 ? 'vandaag' : 'voorbij';
+let next;
+for (const li of document.querySelectorAll('.exams li')) {
+  const d = Math.round((new Date(`${li.dataset.date}T00:00`) - today) / 864e5);
+  li.querySelector('.left').textContent = d > 1 ? `nog ${d} dagen` : d === 1 ? 'morgen' : d === 0 ? 'vandaag' : 'voorbij';
+  if (d < 0) li.classList.add('past');
+  else if (!next) next = { li, d };
+}
+const lead = document.querySelector('#lead');
+lead.hidden = !next;
+if (next) {
+  const { li, d } = next;
+  const name = document.querySelector('#lead-name');
+  lead.className = `lead ${li.classList[0]}`;
+  name.textContent = li.querySelector('.name').textContent;
+  name.href = li.querySelector('a').href;
+  document.querySelector('#lead-date').textContent = li.querySelector('time').textContent;
+  document.querySelector('#days').textContent = d;
+  document.querySelector('#unit').textContent = d === 1 ? 'dag' : 'dagen';
 }
 </script>
 </body>

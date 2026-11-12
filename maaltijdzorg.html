@@ -9,15 +9,16 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="yellow">
+<header class="bar">
+  <a class="back" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Dashboard</a>
+  <h1>Maaltijdzorg</h1>
+</header>
 <main>
-  <nav><a class="back" href="index.html">← Terug naar home</a></nav>
-  <header class="head">
-    <div>
-      <p class="meta">Examen vr 4 december · 18 kaarten</p>
-      <h1>Maaltijdzorg</h1>
-    </div>
+  <div class="tools">
+    <p class="meta">Examen vr 4 december · 18 kaarten</p>
     <button class="toggle" id="mode" aria-pressed="true">Studeermodus</button>
-  </header>
+  </div>
+  <progress id="bar" aria-label="Voortgang"></progress>
   <ol class="deck">
     <li><button class="card" aria-pressed="false"><span class="q">Hoe plan je het werk in de keuken?</span><span class="a">Recept lezen, een werkplan met tijdsschema maken, taken verdelen, mise-en-place doen en tussendoor opruimen.</span></button></li>
     <li><button class="card" aria-pressed="false"><span class="q">Wat is mise-en-place?</span><span class="a">Alle ingrediënten en materiaal klaarzetten en voorbereiden voor je begint te koken.</span></button></li>
@@ -38,6 +39,11 @@
     <li><button class="card" aria-pressed="false"><span class="q">Hoe dek je een tafel?</span><span class="a">Vork links, mes rechts met de snijkant naar het bord, soeplepel rechts naast het mes, dessertbestek boven het bord, glas rechtsboven boven het mes, servet links of op het bord.</span></button></li>
     <li><button class="card" aria-pressed="false"><span class="q">Hoe stel je een evenwichtig dagmenu op?</span><span class="a">Drie hoofdmaaltijden en eventueel twee tussendoortjes. Elke maaltijd bevat een graanproduct of aardappelen, groenten of fruit en een eiwitbron. Varieer over de dag en de week.</span></button></li>
   </ol>
+  <div class="controls">
+    <button class="round" id="prev" aria-label="Vorige kaart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+    <span class="meta" id="count" aria-live="polite"></span>
+    <button class="round" id="next" aria-label="Volgende kaart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+  </div>
 </main>
 <script src="cards.js"></script>
 </body>

@@ -9,15 +9,16 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="cyan">
+<header class="bar">
+  <a class="back" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Dashboard</a>
+  <h1>Wiskunde & Wetenschappen</h1>
+</header>
 <main>
-  <nav><a class="back" href="index.html">← Terug naar home</a></nav>
-  <header class="head">
-    <div>
-      <p class="meta">Modules 7–16 · 20 kaarten</p>
-      <h1>Wiskunde & Wetenschappen</h1>
-    </div>
+  <div class="tools">
+    <p class="meta">Modules 7–16 · 20 kaarten</p>
     <button class="toggle" id="mode" aria-pressed="true">Studeermodus</button>
-  </header>
+  </div>
+  <progress id="bar" aria-label="Voortgang"></progress>
   <ol class="deck">
     <li><button class="card" aria-pressed="false"><span class="q">Hoe bereken je een temperatuurverschil over 0 °C heen?</span><span class="a">Tel de afstand tot 0 aan beide kanten op.<br>Van −5 °C naar 7 °C = 5 + 7 = 12 °C<br>Van 12 °C naar −3 °C = 12 + 3 = 15 °C<br>Van −8 °C naar −1 °C = 7 °C</span></button></li>
     <li><button class="card" aria-pressed="false"><span class="q">Wat is het verband tussen straal en diameter?</span><span class="a">Diameter = 2 × straal.<br>r = 3,5 cm → d = 7 cm<br>r = 12 cm → d = 24 cm</span></button></li>
@@ -40,6 +41,11 @@
     <li><button class="card" aria-pressed="false"><span class="q">Wat zijn evenwijdige, snijdende en kruisende ribben?</span><span class="a">Evenwijdig: zelfde richting, raken nooit (AB en EF)<br>Snijdend: raken elkaar in één punt (AB en AE)<br>Kruisend: niet evenwijdig en raken nooit (AB en CG)</span></button></li>
     <li><button class="card" aria-pressed="false"><span class="q">Een kubusvormig aquarium heeft zijde 40 cm. Hoeveel liter past erin?</span><span class="a">Volume = z × z × z = 40 × 40 × 40 = 64.000 cm³ = 64 liter.<br>Eén glazen zijde: 40 × 40 = 1600 cm².<br>Oppervlakte kubus = 6 × z².</span></button></li>
   </ol>
+  <div class="controls">
+    <button class="round" id="prev" aria-label="Vorige kaart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+    <span class="meta" id="count" aria-live="polite"></span>
+    <button class="round" id="next" aria-label="Volgende kaart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+  </div>
 </main>
 <script src="cards.js"></script>
 </body>

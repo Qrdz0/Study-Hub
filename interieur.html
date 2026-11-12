@@ -9,15 +9,16 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="pink">
+<header class="bar">
+  <a class="back" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Dashboard</a>
+  <h1>Zorg voor interieur en linnen</h1>
+</header>
 <main>
-  <nav><a class="back" href="index.html">← Terug naar home</a></nav>
-  <header class="head">
-    <div>
-      <p class="meta">Examen wo 2 december · 17 kaarten</p>
-      <h1>Zorg voor interieur en linnen</h1>
-    </div>
+  <div class="tools">
+    <p class="meta">Examen wo 2 december · 17 kaarten</p>
     <button class="toggle" id="mode" aria-pressed="true">Studeermodus</button>
-  </header>
+  </div>
+  <progress id="bar" aria-label="Voortgang"></progress>
   <ol class="deck">
     <li><button class="card" aria-pressed="false"><span class="q">Wat zijn de 4 factoren van de cirkel van Sinner?</span><span class="a">Chemie (het product), mechanische actie (wrijven, schrobben), temperatuur en tijd.</span></button></li>
     <li><button class="card" aria-pressed="false"><span class="q">Wat is de regel van de cirkel van Sinner?</span><span class="a">Samen vormen de vier factoren altijd 100%. Wordt één factor kleiner, dan moeten de andere groter worden. Bijvoorbeeld: lagere temperatuur vraagt meer tijd of een sterker product.</span></button></li>
@@ -37,6 +38,11 @@
     <li><button class="card" aria-pressed="false"><span class="q">Hoe reinig je een oven?</span><span class="a">Pyrolyse: de oven verbrandt het vuil tot as op ca. 500 °C. Katalyse: speciale wanden breken vet af tijdens het bakken. Manueel: afgekoeld, stekker uit, met soda of een ovenreiniger.</span></button></li>
     <li><button class="card" aria-pressed="false"><span class="q">Hoe gebruik je een oven zuinig?</span><span class="a">Alleen voorverwarmen als het recept het vraagt, de deur dicht houden, hetelucht gebruiken en de restwarmte benutten door de oven iets vroeger uit te zetten.</span></button></li>
   </ol>
+  <div class="controls">
+    <button class="round" id="prev" aria-label="Vorige kaart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+    <span class="meta" id="count" aria-live="polite"></span>
+    <button class="round" id="next" aria-label="Volgende kaart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+  </div>
 </main>
 <script src="cards.js"></script>
 </body>
