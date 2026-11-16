@@ -16,35 +16,48 @@
     <h1>Examens</h1>
   </header>
 
-  <div class="top">
-  <section class="countdown" aria-label="Examenplanning">
-    <div class="lead green" id="lead">
-      <div>
-        <p class="meta">Volgend examen</p>
-        <a class="lead-name" id="lead-name" href="gezondheid.html">Gezondheid en welzijn</a>
-        <p class="meta" id="lead-date">di 1 dec</p>
-      </div>
-      <p class="days"><span id="days">19</span> <span id="unit">dagen</span></p>
-    </div>
-    <ol class="exams">
-      <li class="green" data-date="2026-12-01"><a href="gezondheid.html"><span class="when"><span class="dot"></span><time class="meta" datetime="2026-12-01">di 1 dec</time></span><span class="name">Gezondheid en welzijn</span><span class="meta left"></span></a></li>
-      <li class="pink" data-date="2026-12-02"><a href="interieur.html"><span class="when"><span class="dot"></span><time class="meta" datetime="2026-12-02">wo 2 dec</time></span><span class="name">Zorg voor interieur en linnen</span><span class="meta left"></span></a></li>
-      <li class="yellow" data-date="2026-12-04"><a href="maaltijdzorg.html"><span class="when"><span class="dot"></span><time class="meta" datetime="2026-12-04">vr 4 dec</time></span><span class="name">Maaltijdzorg</span><span class="meta left"></span></a></li>
-      <li class="blue" data-date="2026-12-07"><a href="pedagogisch.html"><span class="when"><span class="dot"></span><time class="meta" datetime="2026-12-07">ma 7 dec</time></span><span class="name">Pedagogisch handelen</span><span class="meta left"></span></a></li>
-    </ol>
-  </section>
-  <section class="timer" aria-labelledby="pomodoro">
-    <p class="meta" id="pomodoro">Timer</p>
-    <p class="clock" id="clock" role="timer">25:00</p>
-    <div>
-      <button class="btn primary" id="start">Start</button>
-      <button class="btn ghost" id="pause" disabled>Pauze</button>
-    </div>
-  </section>
+  <div class="tabs" role="tablist" aria-label="Weergave">
+    <button role="tab" id="tab-overzicht" aria-selected="true" aria-controls="overzicht">Overzicht</button>
+    <button role="tab" id="tab-vakken" aria-selected="false" aria-controls="vakken" tabindex="-1">Vakken</button>
   </div>
 
-  <section aria-labelledby="vakken">
-    <h2 id="vakken">Vakken</h2>
+  <div role="tabpanel" id="overzicht" aria-labelledby="tab-overzicht">
+    <div class="top">
+      <section class="next green" id="next" aria-labelledby="next-name">
+        <p class="meta"><span class="dot"></span>Volgend examen · <span id="next-date">di 1 dec, 08:40</span></p>
+        <a class="next-name" id="next-name" href="gezondheid.html">Gezondheid en welzijn</a>
+        <div class="count" role="timer">
+          <div><span class="n">00</span><small>dagen</small></div>
+          <span class="sep" aria-hidden="true">:</span>
+          <div><span class="n">00</span><small>uur</small></div>
+          <span class="sep" aria-hidden="true">:</span>
+          <div><span class="n">00</span><small>min</small></div>
+          <span class="sep" aria-hidden="true">:</span>
+          <div><span class="n">00</span><small>sec</small></div>
+        </div>
+      </section>
+      <section class="timer" aria-labelledby="timer">
+        <p class="meta" id="timer">Timer</p>
+        <p class="clock" id="clock" role="timer">25:00</p>
+        <div>
+          <button class="btn primary" id="start">Start</button>
+          <button class="btn ghost" id="pause" disabled>Pauze</button>
+        </div>
+      </section>
+    </div>
+
+    <section aria-labelledby="planning">
+      <h2 id="planning">Planning</h2>
+      <ol class="exams">
+        <li class="green" data-date="2026-12-01T08:40"><a href="gezondheid.html"><span class="dot"></span><time class="meta" datetime="2026-12-01T08:40">di 1 dec</time><span class="name">Gezondheid en welzijn</span><span class="meta left"></span></a></li>
+        <li class="pink" data-date="2026-12-02T08:40"><a href="interieur.html"><span class="dot"></span><time class="meta" datetime="2026-12-02T08:40">wo 2 dec</time><span class="name">Zorg voor interieur en linnen</span><span class="meta left"></span></a></li>
+        <li class="yellow" data-date="2026-12-04T08:40"><a href="maaltijdzorg.html"><span class="dot"></span><time class="meta" datetime="2026-12-04T08:40">vr 4 dec</time><span class="name">Maaltijdzorg</span><span class="meta left"></span></a></li>
+        <li class="blue" data-date="2026-12-07T08:40"><a href="pedagogisch.html"><span class="dot"></span><time class="meta" datetime="2026-12-07T08:40">ma 7 dec</time><span class="name">Pedagogisch handelen</span><span class="meta left"></span></a></li>
+      </ol>
+    </section>
+  </div>
+
+  <div role="tabpanel" id="vakken" aria-labelledby="tab-vakken" hidden>
     <ul class="subjects">
       <li class="green"><a href="gezondheid.html"><span class="dot"></span><span>Gezondheid en welzijn</span><span class="meta">18 kaarten</span></a></li>
       <li class="pink"><a href="interieur.html"><span class="dot"></span><span>Zorg voor interieur en linnen</span><span class="meta">17 kaarten</span></a></li>
@@ -52,40 +65,69 @@
       <li class="blue"><a href="pedagogisch.html"><span class="dot"></span><span>Pedagogisch handelen</span><span class="meta">17 kaarten</span></a></li>
       <li class="cyan"><a href="wiskunde-wetenschappen.html"><span class="dot"></span><span>Wiskunde & Wetenschappen</span><span class="meta">20 kaarten</span></a></li>
     </ul>
-  </section>
+  </div>
 </main>
 <script>
-const today = new Date();
-today.setHours(0, 0, 0, 0);
-let next;
-for (const li of document.querySelectorAll('.exams li')) {
-  const d = Math.round((new Date(`${li.dataset.date}T00:00`) - today) / 864e5);
-  li.querySelector('.left').textContent = d > 1 ? `nog ${d} dagen` : d === 1 ? 'morgen' : d === 0 ? 'vandaag' : 'voorbij';
-  if (d < 0) li.classList.add('past');
-  else if (!next) next = { li, d };
-}
-const lead = document.querySelector('#lead');
-lead.hidden = !next;
-if (next) {
-  const { li, d } = next;
-  const name = document.querySelector('#lead-name');
-  lead.className = `lead ${li.classList[0]}`;
-  name.textContent = li.querySelector('.name').textContent;
-  name.href = li.querySelector('a').href;
-  document.querySelector('#lead-date').textContent = li.querySelector('time').textContent;
-  document.querySelector('#days').textContent = d;
-  document.querySelector('#unit').textContent = d === 1 ? 'dag' : 'dagen';
-}
+const $ = s => document.querySelector(s);
+
+const tabs = [...document.querySelectorAll('[role="tab"]')];
+const select = tab => tabs.forEach(t => {
+  const on = t === tab;
+  t.setAttribute('aria-selected', on);
+  t.tabIndex = on ? 0 : -1;
+  document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+});
+tabs.forEach((t, k) => {
+  t.addEventListener('click', () => select(t));
+  t.addEventListener('keydown', e => {
+    const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+    if (!step) return;
+    const to = tabs[(k + step + tabs.length) % tabs.length];
+    select(to);
+    to.focus();
+  });
+});
+
+const pad = n => String(n).padStart(2, '0');
+const split = ms => {
+  const s = Math.floor(ms / 1000);
+  return [Math.floor(s / 86400), Math.floor(s / 3600) % 24, Math.floor(s / 60) % 60, s % 60].map(pad);
+};
+const exams = [...document.querySelectorAll('.exams li')].map(li => ({ li, at: new Date(li.dataset.date).getTime(), left: li.querySelector('.left') }));
+const next = $("#next"), nextName = $('#next-name'), digits = [...next.querySelectorAll('.n')];
+let shown;
+const tick = () => {
+  const now = Date.now();
+  const upcoming = exams.find(e => e.at > now);
+  for (const e of exams) {
+    const ms = e.at - now;
+    const [d, h, m, s] = split(ms);
+    e.li.classList.toggle('past', ms <= 0);
+    e.left.textContent = ms > 0 ? `${d}d ${h}u ${m}m ${s}s` : 'voorbij';
+  }
+  next.hidden = !upcoming;
+  if (!upcoming) return;
+  if (upcoming !== shown) {
+    shown = upcoming;
+    next.className = `next ${upcoming.li.classList[0]}`;
+    nextName.textContent = upcoming.li.querySelector('.name').textContent;
+    nextName.href = upcoming.li.querySelector('a').href;
+    $('#next-date').textContent = `${upcoming.li.querySelector('time').textContent}, ${upcoming.li.dataset.date.slice(11)}`;
+  }
+  split(upcoming.at - now).forEach((v, k) => { digits[k].textContent = v; });
+};
+tick();
+setInterval(tick, 250);
 
 const LENGTH = 25 * 60e3;
-const [clock, start, pause] = ['#clock', '#start', '#pause'].map(s => document.querySelector(s));
-let left = LENGTH, end, tick;
+const [clock, start, pause] = ['#clock', '#start', '#pause'].map($);
+let left = LENGTH, end, timer;
 const fmt = ms => {
   const s = Math.ceil(ms / 1000);
-  return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+  return `${pad(Math.floor(s / 60))}:${pad(s % 60)}`;
 };
 const stop = () => {
-  clearInterval(tick);
+  clearInterval(timer);
   start.disabled = false;
   pause.disabled = true;
 };
@@ -103,7 +145,7 @@ const update = () => {
 };
 start.addEventListener('click', () => {
   end = Date.now() + left;
-  tick = setInterval(update, 250);
+  timer = setInterval(update, 250);
   start.disabled = true;
   pause.disabled = false;
 });
