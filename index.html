@@ -16,6 +16,7 @@
     <h1>Examens</h1>
   </header>
 
+  <div class="top">
   <section class="countdown" aria-label="Examenplanning">
     <div class="lead green" id="lead">
       <div>
@@ -32,6 +33,15 @@
       <li class="blue" data-date="2026-12-07"><a href="pedagogisch.html"><span class="when"><span class="dot"></span><time class="meta" datetime="2026-12-07">ma 7 dec</time></span><span class="name">Pedagogisch handelen</span><span class="meta left"></span></a></li>
     </ol>
   </section>
+  <section class="timer" aria-labelledby="pomodoro">
+    <p class="meta" id="pomodoro">Pomodoro</p>
+    <p class="clock" id="clock" role="timer">25:00</p>
+    <div>
+      <button class="btn primary" id="start">Start</button>
+      <button class="btn" id="pause" disabled>Pauze</button>
+    </div>
+  </section>
+  </div>
 
   <section aria-labelledby="vakken">
     <h2 id="vakken">Vakken</h2>
@@ -66,6 +76,41 @@ if (next) {
   document.querySelector('#days').textContent = d;
   document.querySelector('#unit').textContent = d === 1 ? 'dag' : 'dagen';
 }
+
+const LENGTH = 25 * 60e3;
+const [clock, start, pause] = ['#clock', '#start', '#pause'].map(s => document.querySelector(s));
+let left = LENGTH, end, tick;
+const fmt = ms => {
+  const s = Math.ceil(ms / 1000);
+  return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+};
+const stop = () => {
+  clearInterval(tick);
+  start.disabled = false;
+  pause.disabled = true;
+};
+const update = () => {
+  left = Math.max(0, end - Date.now());
+  clock.textContent = fmt(left);
+  if (left) return;
+  stop();
+  // let 00:00 paint before the blocking alert
+  setTimeout(() => {
+    alert('De tijd is om. Neem 5 minuten pauze.');
+    left = LENGTH;
+    clock.textContent = fmt(left);
+  }, 50);
+};
+start.addEventListener('click', () => {
+  end = Date.now() + left;
+  tick = setInterval(update, 250);
+  start.disabled = true;
+  pause.disabled = false;
+});
+pause.addEventListener('click', () => {
+  left = Math.max(0, end - Date.now());
+  stop();
+});
 </script>
 </body>
 </html>
