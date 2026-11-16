@@ -52,8 +52,10 @@ svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width:
 .blue { --c: var(--blue); }
 .cyan { --c: var(--cyan); }
 
-.btn { min-height: 44px; padding: 0 var(--s5); background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-sm); transition: background-color .15s var(--ease), border-color .15s var(--ease); }
+.btn { min-height: 44px; padding: 0 var(--s5); background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-sm); transition: background-color .2s var(--ease), border-color .2s var(--ease); }
 .btn:hover:not(:disabled) { background: var(--raised); }
+.btn.ghost { background: transparent; }
+.btn.ghost:hover:not(:disabled) { border-color: var(--muted); }
 .btn.primary { background: var(--text); border-color: var(--text); color: var(--bg); font-weight: 500; }
 .btn.primary:hover:not(:disabled) { background: var(--text-2); }
 .btn:disabled { opacity: .35; cursor: default; }
@@ -81,9 +83,9 @@ header .meta { margin-bottom: var(--s2); }
 .exams .when { display: flex; align-items: center; gap: var(--s2); }
 .exams .left { margin-top: auto; padding-top: var(--s2); }
 .exams .past { opacity: .5; }
-.timer { display: flex; flex-direction: column; gap: var(--s4); padding: var(--s5); }
+.timer { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--s5); padding: var(--s5); user-select: none; }
 .clock { font: 500 clamp(3.5rem, 12vw, 4.5rem)/1 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.04em; }
-.timer div { display: flex; gap: var(--s2); margin-top: auto; }
+.timer div { display: flex; gap: var(--s2); width: 100%; }
 .timer .btn { flex: 1; }
 .subjects { display: grid; gap: var(--s3); grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
 .subjects a { display: flex; flex-direction: column; gap: var(--s1); min-height: 136px; padding: var(--s5); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); transition: background-color .15s var(--ease), border-color .15s var(--ease); }
