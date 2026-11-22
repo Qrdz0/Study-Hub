@@ -12,6 +12,7 @@
   --yellow: #e3c463;
   --blue: #7fb2e5;
   --cyan: #5ec4d6;
+  --orange: #e8a06a;
   --s1: 4px;
   --s2: 8px;
   --s3: 12px;
@@ -51,6 +52,7 @@ svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width:
 .yellow { --c: var(--yellow); }
 .blue { --c: var(--blue); }
 .cyan { --c: var(--cyan); }
+.orange { --c: var(--orange); }
 
 .btn { min-height: 44px; padding: 0 var(--s5); background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-sm); transition: background-color .2s var(--ease), border-color .2s var(--ease); }
 .btn:hover:not(:disabled) { background: var(--raised); }
