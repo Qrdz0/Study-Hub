@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<canvas id="snow" aria-hidden="true"></canvas>
 <header class="bar"><span class="brand">Study Hub</span></header>
 <main>
   <header>
@@ -67,6 +68,7 @@
     </ul>
   </div>
 </main>
+<footer class="foot"><a href="privacy.html">Privacy</a><a href="terms.html">Voorwaarden</a></footer>
 <script>
 const $ = s => document.querySelector(s);
 
@@ -157,6 +159,46 @@ pause.addEventListener('click', () => {
   left = Math.max(0, end - Date.now());
   stop();
 });
+
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const canvas = $('#snow'), ctx = canvas.getContext('2d');
+  let w, h, last;
+  const size = () => {
+    const r = Math.min(devicePixelRatio, 2);
+    w = innerWidth;
+    h = innerHeight;
+    canvas.width = w * r;
+    canvas.height = h * r;
+    ctx.setTransform(r, 0, 0, r, 0, 0);
+  };
+  size();
+  addEventListener('resize', size);
+  const flakes = Array.from({ length: w < 768 ? 40 : 70 }, () => ({
+    x: Math.random() * w, y: Math.random() * h, r: .6 + Math.random() * 1.4, v: .25 + Math.random() * .45, p: Math.random() * 6.28
+  }));
+  const fall = t => {
+    // speed in px per 60Hz frame, so 120Hz screens don't snow twice as fast
+    const dt = last ? Math.min((t - last) / 16.7, 3) : 1;
+    last = t;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = 'rgba(243, 237, 228, .55)';
+    ctx.beginPath();
+    for (const f of flakes) {
+      f.y += f.v * dt;
+      f.p += .012 * dt;
+      if (f.y > h + 4) {
+        f.y = -4;
+        f.x = Math.random() * w;
+      }
+      const x = f.x + Math.sin(f.p) * 14;
+      ctx.moveTo(x + f.r, f.y);
+      ctx.arc(x, f.y, f.r, 0, 6.283);
+    }
+    ctx.fill();
+    requestAnimationFrame(fall);
+  };
+  requestAnimationFrame(fall);
+}
 </script>
 </body>
 </html>
