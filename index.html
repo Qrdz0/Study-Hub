@@ -176,28 +176,44 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   };
   size();
   addEventListener('resize', size);
-  const flakes = Array.from({ length: w < 768 ? 40 : 70 }, () => ({
-    x: Math.random() * w, y: Math.random() * h, r: .6 + Math.random() * 1.4, v: .25 + Math.random() * .45, p: Math.random() * 6.28
+  const rand = (a, b) => a + Math.random() * (b - a);
+  // far to near: size, speed, sway and opacity grow together, which sells the depth
+  const layers = [
+    { n: 70, r: [1, 2], v: [.6, 1.1], a: .35, c: '#d4cbbe' },
+    { n: 45, r: [2, 3.5], v: [1.2, 2], a: .6, c: '#ece5da' },
+    { n: 20, r: [4, 6], v: [2.2, 3.2], a: .9, c: '#f7f3ed' }
+  ].map(l => ({
+    ...l,
+    flakes: Array.from({ length: Math.round(l.n * (w < 768 ? .55 : 1)) }, () => ({
+      x: rand(0, w), y: rand(0, h), r: rand(...l.r), vy: rand(...l.v), vx: rand(-.3, .3),
+      p: rand(0, 6.28), s: rand(.01, .03), sway: rand(1, 2) * l.r[1]
+    }))
   }));
   const fall = t => {
     // speed in px per 60Hz frame, so 120Hz screens don't snow twice as fast
     const dt = last ? Math.min((t - last) / 16.7, 3) : 1;
     last = t;
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = 'rgba(243, 237, 228, .55)';
-    ctx.beginPath();
-    for (const f of flakes) {
-      f.y += f.v * dt;
-      f.p += .012 * dt;
-      if (f.y > h + 4) {
-        f.y = -4;
-        f.x = Math.random() * w;
+    for (const l of layers) {
+      ctx.globalAlpha = l.a;
+      ctx.fillStyle = l.c;
+      ctx.beginPath();
+      for (const f of l.flakes) {
+        f.y += f.vy * dt;
+        f.x += f.vx * dt;
+        f.p += f.s * dt;
+        if (f.y > h + 8) {
+          f.y = -8;
+          f.x = rand(0, w);
+        }
+        if (f.x < -12) f.x = w + 12;
+        else if (f.x > w + 12) f.x = -12;
+        const x = f.x + Math.sin(f.p) * f.sway;
+        ctx.moveTo(x + f.r, f.y);
+        ctx.arc(x, f.y, f.r, 0, 6.283);
       }
-      const x = f.x + Math.sin(f.p) * 14;
-      ctx.moveTo(x + f.r, f.y);
-      ctx.arc(x, f.y, f.r, 0, 6.283);
+      ctx.fill();
     }
-    ctx.fill();
     requestAnimationFrame(fall);
   };
   requestAnimationFrame(fall);
