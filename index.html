@@ -38,12 +38,14 @@
         </div>
       </section>
       <section class="timer" aria-labelledby="timer">
-        <p class="meta" id="timer">Timer</p>
-        <p class="clock" id="clock" role="timer">25:00</p>
-        <div>
-          <button class="btn primary" id="start">Start</button>
-          <button class="btn ghost" id="pause" disabled>Pauze</button>
+        <p class="meta" id="timer">Focustimer · 25 min</p>
+        <p class="clock" id="clock" role="timer" aria-label="Resterende tijd">25:00</p>
+        <div class="timer-track" aria-hidden="true"><span id="timer-fill"></span></div>
+        <div class="timer-btns">
+          <button class="btn primary" id="timer-toggle" type="button">Start</button>
+          <button class="btn ghost" id="timer-reset" type="button" disabled>Reset</button>
         </div>
+        <p class="meta timer-status" id="timer-status" aria-live="polite">Druk op Start voor 25 minuten focus.</p>
       </section>
     </div>
 
@@ -75,13 +77,32 @@
 <script>
 const $ = s => document.querySelector(s);
 
+const calm = matchMedia('(prefers-reduced-motion: reduce)');
 const tabs = [...document.querySelectorAll('[role="tab"]')];
-const select = tab => tabs.forEach(t => {
-  const on = t === tab;
-  t.setAttribute('aria-selected', on);
-  t.tabIndex = on ? 0 : -1;
-  document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
-});
+const panels = tabs.map(t => document.getElementById(t.getAttribute('aria-controls')));
+let swap;
+// old panel fades out, then the new one fades in (the fade-in lives in style.css)
+const select = tab => {
+  const panel = panels[tabs.indexOf(tab)];
+  tabs.forEach(t => {
+    const on = t === tab;
+    t.setAttribute('aria-selected', on);
+    t.tabIndex = on ? 0 : -1;
+  });
+  // fast double taps: cancel a fade that is still running
+  clearTimeout(swap);
+  panels.forEach(p => p.classList.remove('leaving'));
+  const current = panels.find(p => !p.hidden && p !== panel);
+  if (!current) return;
+  const show = () => {
+    current.hidden = true;
+    current.classList.remove('leaving');
+    panel.hidden = false;
+  };
+  if (calm.matches) return show();
+  current.classList.add('leaving');
+  swap = setTimeout(show, 160);
+};
 tabs.forEach((t, k) => {
   t.addEventListener('click', () => select(t));
   t.addEventListener('keydown', e => {
@@ -124,46 +145,7 @@ const tick = () => {
 tick();
 countdown = setInterval(tick, 250);
 
-const LENGTH = 25 * 60e3;
-const [clock, start, pause] = ['#clock', '#start', '#pause'].map($);
-let left = LENGTH, end, timer;
-const fmt = ms => {
-  const s = Math.ceil(ms / 1000);
-  return `${pad(Math.floor(s / 60))}:${pad(s % 60)}`;
-};
-const stop = () => {
-  clearInterval(timer);
-  start.disabled = false;
-  pause.disabled = true;
-};
-const update = () => {
-  left = Math.max(0, end - Date.now());
-  clock.textContent = fmt(left);
-  if (left) return;
-  clearInterval(timer);
-  pause.disabled = true;
-  document.title = '00:00 · Study Hub';
-  // let 00:00 paint before the blocking alert; Start stays off until it is dismissed
-  setTimeout(() => {
-    alert('De tijd is om. Neem 5 minuten pauze.');
-    left = LENGTH;
-    clock.textContent = fmt(left);
-    start.disabled = false;
-    document.title = 'Study Hub';
-  }, 50);
-};
-start.addEventListener('click', () => {
-  end = Date.now() + left;
-  timer = setInterval(update, 250);
-  start.disabled = true;
-  pause.disabled = false;
-});
-pause.addEventListener('click', () => {
-  left = Math.max(0, end - Date.now());
-  stop();
-});
-
-if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+if (!calm.matches) {
   const canvas = $('#snow'), ctx = canvas.getContext('2d');
   let w, h, last;
   const size = () => {
@@ -219,5 +201,6 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   requestAnimationFrame(fall);
 }
 </script>
+<script src="timer.js"></script>
 </body>
 </html>

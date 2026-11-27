@@ -80,6 +80,7 @@ header .meta { margin-bottom: var(--s2); }
 .tabs [aria-selected="true"] { color: var(--text); border-bottom-color: var(--text); }
 [role="tabpanel"] { animation: fade .3s var(--ease); }
 @keyframes fade { from { opacity: 0; transform: translateY(8px); } }
+[role="tabpanel"].leaving { opacity: 0; transform: translateY(-4px); transition: opacity .16s var(--ease), transform .16s var(--ease); }
 
 .top { display: grid; gap: var(--s3); }
 .top > section, .exams { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); }
@@ -87,20 +88,29 @@ header .meta { margin-bottom: var(--s2); }
 .next .meta { display: flex; align-items: center; gap: var(--s2); }
 .next-name { display: flex; align-items: center; min-height: 44px; font-size: 1.5rem; font-weight: 500; line-height: 1.25; transition: color .2s var(--ease); }
 .next-name:hover { text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 4px; }
-.count { display: flex; align-items: flex-start; gap: var(--s2); margin-top: var(--s6); font-size: clamp(2rem, 14cqi, 5rem); font-weight: 500; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+/* digital clock: monospace tabular digits in split tiles, so ticking seconds never shift */
+.count { display: flex; align-items: flex-start; gap: .14em; margin-top: var(--s6); font: 600 clamp(1.75rem, 10.5cqi, 4.25rem)/1 var(--mono); font-variant-numeric: tabular-nums slashed-zero; font-feature-settings: "tnum" 1, "zero" 1; letter-spacing: 0; }
 .count div { display: flex; flex-direction: column; align-items: center; gap: var(--s2); }
-.count small { color: var(--muted); font: 400 .8125rem/1.4 var(--mono); letter-spacing: 0; }
-.count .sep { color: var(--muted); opacity: .5; }
+.count .n { position: relative; padding: .16em .14em; color: var(--text); background: linear-gradient(var(--raised) 0 50%, #25211d 50% 100%); border: 1px solid var(--line-2); border-radius: var(--r); box-shadow: inset 0 1px rgb(255 255 255 / .05), 0 10px 24px -14px rgb(0 0 0 / .9); }
+.count .n::after { content: ""; position: absolute; inset: 50% 0 auto; height: 1px; background: rgb(0 0 0 / .5); }
+.count small { color: var(--muted); font: 400 .8125rem/1.4 var(--mono); letter-spacing: .04em; }
+.count .sep { padding-top: .16em; color: var(--c, var(--muted)); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .25; } }
 .exams { overflow: hidden; }
 .exams li + li { border-top: 1px solid var(--line); }
 .exams a { display: grid; grid-template-columns: 8px 1fr; align-items: center; column-gap: var(--s4); padding: var(--s3) var(--s5); transition: background-color .2s var(--ease); }
 .exams a:hover { background: var(--raised); }
 .exams time, .exams .name, .exams .left { grid-column: 2; }
 .exams .past .name { color: var(--muted); }
-.timer { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--s5); padding: var(--s5); user-select: none; }
-.clock { font: 500 2.5rem/1 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
-.timer div { display: flex; gap: var(--s2); width: 100%; }
-.timer .btn { flex: 1; }
+.timer { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--s4); padding: var(--s5); user-select: none; }
+.clock { font: 600 3.25rem/1 var(--mono); font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; letter-spacing: 0; }
+.timer-track { width: 100%; height: 4px; overflow: hidden; background: var(--raised); border-radius: 999px; }
+.timer-track span { display: block; height: 100%; background: var(--text); transform: scaleX(0); transform-origin: left; transition: transform .3s linear; }
+.timer-btns { display: flex; gap: var(--s2); width: 100%; }
+.timer-btns .btn { flex: 1; }
+.timer-status { min-height: 2.8em; text-align: center; }
+.timer-badge { flex: none; display: inline-flex; align-items: center; min-height: 36px; margin-left: auto; padding: 0 var(--s3); background: var(--surface); border: 1px solid var(--line-2); border-radius: 999px; font: 500 .875rem/1 var(--mono); font-variant-numeric: tabular-nums; transition: border-color .2s var(--ease); }
+.timer-badge:hover, .timer-badge.is-done { border-color: var(--text-2); }
 .subjects { display: grid; gap: var(--s3); grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
 .subjects a { display: flex; flex-direction: column; gap: var(--s1); min-height: 136px; padding: var(--s5); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); transition: background-color .15s var(--ease), border-color .15s var(--ease); }
 .subjects a:hover { background: var(--raised); border-color: var(--c); }
@@ -165,12 +175,14 @@ body:not([data-mode="quiz"]) #show { display: none; }
   .top { grid-template-columns: 1fr 256px; }
   .top:has(> .next[hidden]) { grid-template-columns: 1fr; }
   .exams a { grid-template-columns: 8px 96px 1fr auto; padding: var(--s4) var(--s6); }
-  .clock { font-size: 3rem; }
+  .clock { font-size: 3.5rem; }
   .exams time, .exams .name, .exams .left { grid-column: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   .card, .q, .a { transition: none; }
   [role="tabpanel"] { animation: none; }
+  .count .sep { animation: none; }
+  .timer-track span { transition: none; }
 }
 
 [hidden] { display: none; }
